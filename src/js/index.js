@@ -52,3 +52,7 @@ $(document).ready(function(){
     })
 })
 
+$(document).on("click", ".todo-delete-button ", function(){
+    $(this).parent().parent().remove();
+})
+
