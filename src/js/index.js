@@ -41,12 +41,12 @@ function tdNodeWrapper(node){
 
 $(document).ready(function(){
     $(".add-todo-button").click(function(){
-        var  todoElement = $("<tr />", {
+        let  todoElement = $("<tr />", {
             class: "todo-element"
         });
-        var todoListValueNode = createTODOValueNode();
-        var todoEditButton = tdNodeWrapper( createTODOEditButton() );
-        var todoDeleteButton = tdNodeWrapper( createTODODeleteButton() );
+        let todoListValueNode = createTODOValueNode();
+        let todoEditButton = tdNodeWrapper( createTODOEditButton() );
+        let todoDeleteButton = tdNodeWrapper( createTODODeleteButton() );
         todoElement.append(todoListValueNode).append(todoEditButton ).append(todoDeleteButton);
         $("#todo-list-container-body").append(todoElement);
     })
