@@ -24,7 +24,7 @@ function createTODOEditInput(){
     });
 }
 function createTODOSaveButton(){
-    return $("<button /",{
+    return $("<button />",{
         class: "todo-save-button no-border"
     });
 }
@@ -37,6 +37,22 @@ function createTODOSaveCancelButton(){
 
 function tdNodeWrapper(node){
     return $("<td />").append(node)
+}
+
+function switchButtonsToEditMode(node){
+    let editButton = $(node).find(".todo-edit-button");
+    $(editButton).replaceWith(createTODOSaveButton());
+
+    let deleteButton = $(node).find(".todo-delete-button");
+    $(deleteButton).replaceWith(createTODOSaveCancelButton());
+}
+
+function switchButtonsToShowMode(node){
+    let saveButton = $(node).find(".todo-save-button");
+    $(saveButton).replaceWith(createTODOEditButton());
+
+    let saveCancelButton = $(node).find(".todo-save-cancel-button");
+    $(saveCancelButton).replaceWith(createTODODeleteButton());
 }
 
 $(document).ready(function(){
@@ -52,7 +68,44 @@ $(document).ready(function(){
     })
 })
 
-$(document).on("click", ".todo-delete-button ", function(){
+$(document).on("click", ".todo-delete-button", function(){
     $(this).parent().parent().remove();
 })
+
+$(document).on("click", ".todo-edit-button", function(){
+    let elementNode = $(this).parent().parent();
+    let currentNode = $(elementNode).find(".todo-list-value");
+    let currentValue = $(currentNode).text();
+    $(currentNode).text("");
+
+    let editNode = createTODOEditInput();
+    $(editNode).val(currentValue);
+    editNode.get(0).previousValue = currentValue;
+    $(currentNode).append(editNode);
+
+    switchButtonsToEditMode(elementNode);
+})
+
+$(document).on("click", ".todo-save-button", function(){
+    let elementNode = $(this).parent().parent();
+    let editNode = $(elementNode).find(".todo-input-area.edit");
+    let newValue = $(editNode).val();
+
+    $(editNode).remove();
+    $($(elementNode).find(".todo-list-value")).text(newValue);
+
+    switchButtonsToShowMode(elementNode);
+})
+
+$(document).on("click", ".todo-save-cancel-button", function(){
+    let elementNode = $(this).parent().parent();
+    let editNode = $(elementNode).find(".todo-input-area.edit");
+
+    $(editNode).remove();
+    $($(elementNode).find(".todo-list-value")).text(editNode.get(0).previousValue);
+
+    switchButtonsToShowMode(elementNode);
+})
+
+
 
